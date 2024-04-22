@@ -53,7 +53,6 @@ class Graph:
                     break
 
             for edge in edges[current_node]:
-                print(edges[current_node])
                 if distances[edge[0]] + edge[2] < distances[edge[1]]:
                     distances[edge[1]] = distances[edge[0]] + edge[2]
                     pred[edge[1]] = edge[0]
@@ -78,6 +77,18 @@ def main():
     distances, pred = g.johnson(0)
     print(f'Distances: {distances}')
     print(f'Pred: {pred}')
+
+    g1 = Graph(4)
+    g1.add_edge(0, 3, 2)
+    g1.add_edge(1, 0, 6)
+    g1.add_edge(1, 2, 3)
+    g1.add_edge(2, 0, 4)
+    g1.add_edge(2, 3, 5)
+    g1.add_edge(3, 1, -7)
+    g1.add_edge(3, 2, -3)
+    distances1, pred1 = g1.johnson(3)
+    print(f'Distances: {distances1}')
+    print(f'Pred: {pred1}')
     
 
 if __name__ == '__main__':
