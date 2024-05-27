@@ -1,53 +1,55 @@
-import pandas as pd
 import numpy as np
 
-def cluster_iris_data():
-    # Load the iris dataset using pandas
-    data = pd.read_csv('iris.csv')
 
-    # Extract the features from the dataset
-    features = data.iloc[:, :-1].values
+def pca(data: np.ndarray, n_components: int) -> np.ndarray:
+    data_meaned = data - np.mean(data, axis=0)
 
-    # Normalize the features
-    normalized_features = (features - np.mean(features, axis=0)) / np.std(features, axis=0)
+    cov_matrix = np.cov(data_meaned, rowvar=False)
 
-    # Calculate the covariance matrix
-    covariance_matrix = np.cov(normalized_features.T)
+    eigen_values, eigen_vectors = np.linalg.eigh(cov_matrix)
 
-    # Perform eigen decomposition on the covariance matrix
-    eigenvalues, eigenvectors = np.linalg.eig(covariance_matrix)
+    sorted_index = np.argsort(eigen_values)[::-1]
+    sorted_eigenvectors = eigen_vectors[:, sorted_index]
 
-    # Sort the eigenvalues and eigenvectors in descending order
-    sorted_indices = np.argsort(eigenvalues)[::-1]
-    sorted_eigenvalues = eigenvalues[sorted_indices]
-    sorted_eigenvectors = eigenvectors[:, sorted_indices]
+    eigenvector_subset = sorted_eigenvectors[:, 0:n_components]
 
-    # Select the top k eigenvectors based on the explained variance
-    k = 2
-    selected_eigenvectors = sorted_eigenvectors[:, :k]
+    data_reduced = np.dot(
+        eigenvector_subset.transpose(), data_meaned.transpose()
+    ).transpose()
 
-    # Project the data onto the selected eigenvectors
-    projected_data = np.dot(normalized_features, selected_eigenvectors)
+    return data_reduced
 
-    # Perform clustering on the projected data (e.g., using k-means algorithm)
-
-    # Return the clustered data
-    return projected_data
 
 def main():
-    # Cluster the iris dataset using PCA
-    clustered_data = cluster_iris_data()
+    X = np.random.randint(10, 50, 100).reshape(20, 5)
 
-    # Plot the data using matplotlib
+    import pandas as pd
+    import seaborn as sns
     import matplotlib.pyplot as plt
-    plt.scatter(clustered_data[:, 0], clustered_data[:, 1])
-    plt.xlabel('Principal Component 1')
-    plt.ylabel('Principal Component 2')
-    plt.title('Iris Dataset')
+
+    # Get the IRIS dataset
+    url = "https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data"
+    data = pd.read_csv(
+        url,
+        names=["sepal length", "sepal width", "petal length", "petal width", "target"],
+    )
+
+    x = data.iloc[:, 0:4]
+
+    target = data.iloc[:, 4]
+
+    mat_reduced = pca(x, 2)
+
+    principal_df = pd.DataFrame(mat_reduced, columns=["PC1", "PC2"])
+
+    principal_df = pd.concat([principal_df, pd.DataFrame(target)], axis=1)
+
+    plt.figure(figsize=(6, 6))
+    sns.scatterplot(
+        data=principal_df, x="PC1", y="PC2", hue="target", s=60, palette="icefire"
+    )
     plt.show()
 
-    # Display the clustered data
-    print(clustered_data)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
