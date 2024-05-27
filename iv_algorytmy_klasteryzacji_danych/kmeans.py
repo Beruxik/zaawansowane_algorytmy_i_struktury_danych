@@ -1,55 +1,58 @@
-import csv
-import random
-import math
+import numpy as np
+import pandas as pd
 
-def load_iris_data(filename):
-    data = []
-    with open(filename, 'r') as file:
-        reader = csv.reader(file)
-        for row in reader:
-            data.append([float(x) for x in row])
-    return data
-
-def euclidean_distance(point1, point2):
-    distance = 0
-    for i in range(len(point1)):
-        distance += (point1[i] - point2[i]) ** 2
-    return math.sqrt(distance)
 
 def initialize_centroids(data, k):
-    centroids = random.sample(data, k)
+    centroids = data[np.random.choice(data.shape[0], k, replace=False)]
     return centroids
+
 
 def assign_clusters(data, centroids):
-    clusters = [[] for _ in range(len(centroids))]
-    for point in data:
-        distances = [euclidean_distance(point, centroid) for centroid in centroids]
-        cluster_index = distances.index(min(distances))
-        clusters[cluster_index].append(point)
+    distances = np.sqrt(((data - centroids[:, np.newaxis]) ** 2).sum(axis=2))
+    clusters = np.argmin(distances, axis=0)
     return clusters
 
-def update_centroids(clusters):
-    centroids = []
-    for cluster in clusters:
-        centroid = [sum(x) / len(cluster) for x in zip(*cluster)]
-        centroids.append(centroid)
+
+def update_centroids(data, clusters, k):
+    centroids = np.zeros((k, data.shape[1]))
+    for i in range(k):
+        centroids[i] = np.mean(data[clusters == i], axis=0)
     return centroids
 
-def kmeans(data, k, max_iterations=100):
+
+def kmeans(data, k, max_iterations=10000):
     centroids = initialize_centroids(data, k)
     for _ in range(max_iterations):
         clusters = assign_clusters(data, centroids)
-        new_centroids = update_centroids(clusters)
-        if centroids == new_centroids:
+        new_centroids = update_centroids(data, clusters, k)
+        if np.all(centroids == new_centroids):
             break
         centroids = new_centroids
     return clusters
 
-# Usage example
-data = load_iris_data('iris.csv')
-clusters = kmeans(data, k=3)
-for i, cluster in enumerate(clusters):
-    print(f'Cluster {i+1}:')
-    for point in cluster:
-        print(point)
-    print()
+
+def main():
+    # Load the iris dataset
+    data = pd.read_csv("iris.csv")
+
+    # Drop the target column if present
+    if "variety" in data.columns:
+        data = data.drop("variety", axis=1)
+
+    # Convert the data to numpy array
+    data = data.values
+    # Perform k-means clustering
+    k = 3  # Number of clusters
+    clusters = kmeans(data, k)
+
+    # Rename the clusters to iris species
+    clusters = clusters.astype(str)  # Convert clusters to string type
+    clusters[clusters == '0'] = "setosa"
+    clusters[clusters == '1'] = "versicolor"
+    clusters[clusters == '2'] = "virginica"
+
+    print(clusters)
+
+
+if __name__ == "__main__":
+    main()
