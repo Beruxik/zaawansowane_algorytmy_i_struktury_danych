@@ -1,0 +1,32 @@
+KLASA Graph:
+    METODA __init__(vertices):
+        INICJALIZUJ V jako vertices
+        INICJALIZUJ graph jako pustą listę
+
+    METODA add_edge(u, v, w):
+        DODAJ [u, v, w] do graph
+        DODAJ [v, u, w] do graph
+
+    METODA get_smallest_edge_from_mst(mst, visited):
+        INICJALIZUJ edges_to_use jako pustą listę
+        DLA każdego edge w graph:
+            JEŚLI edge[1] nie jest w visited ORAZ edge[0] jest w visited:
+                DODAJ edge do edges_to_use
+        
+        SORTUJ edges_to_use według trzeciego elementu (waga) w rosnącej kolejności
+        ZWRÓĆ pierwszy element edges_to_use JEŚLI length(edges_to_use) nie jest zero, W PRZECIWNYM RAZIE ZWRÓĆ -1
+    
+    METODA prim(start_vertex):
+        INICJALIZUJ visited jako listę zawierającą start_vertex
+        INICJALIZUJ tree jako pustą listę
+
+        DLA _ od 0 do V - 2:
+            DODAJ wynik get_smallest_edge_from_mst(tree, visited) do tree
+            DODAJ tree[length(tree) - 1][1] do visited
+        
+        INICJALIZUJ cost jako 0
+        DLA każdego edge w tree:
+            DODAJ edge[2] do cost
+            WYPISZ edge[0] --- edge[1]: cost: edge[2]
+        
+        WYPISZ 'MST cost: ' + cost

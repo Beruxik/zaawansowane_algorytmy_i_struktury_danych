@@ -1,0 +1,32 @@
+FUNKCJA lf(graph):
+    INICJALIZUJ degrees jako słownik gdzie klucz to i, a wartość to 0 dla każdego i w zakresie długości graph
+    INICJALIZUJ neighbours jako słownik gdzie klucz to i, a wartość to pusta lista dla każdego i w zakresie długości graph
+
+    DLA i, row w enumerate(graph):
+        USTAW degree na 0
+        DLA j, weight w enumerate(row):
+            JEŚLI weight nie jest równy 0 i weight nie jest równy inf:
+                ZWIĘKSZ degree o 1
+                DODAJ j do neighbours[i]
+
+        USTAW degrees[i] na degree
+    
+    POSORTUJ degrees według wartości, a w przypadku równości według klucza malejąco
+    USTAW vertices_sorted_by_degrees na listę kluczy degrees w tej kolejności
+
+    INICJALIZUJ colors jako pusty słownik
+    
+    DOPÓKI vertices_sorted_by_degrees nie jest pusty:
+        USTAW vertice na ostatni element z vertices_sorted_by_degrees i usuń ten element
+        USTAW color na 0
+        DLA v w colors:
+            JEŚLI colors[v] jest równy color i v jest w neighbours[vertice]:
+                ZWIĘKSZ color o 1
+        
+        USTAW colors[vertice] na color
+    
+    INICJALIZUJ colors_translated jako pusty słownik
+    DLA każdego color w colors:
+        USTAW colors_translated[chr(ord('a') + color)] na colors[color]
+
+    ZWRÓĆ colors_translated

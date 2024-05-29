@@ -1,0 +1,53 @@
+KLASA Graph:
+    METODA __init__(vertices):
+        INICJALIZUJ V jako vertices
+        INICJALIZUJ graph jako pustą listę
+
+    METODA add_edge(u, v, w):
+        DODAJ [u, v, w] do graph
+
+    METODA find(parent, i):
+        JEŚLI parent[i] != i:
+            USTAW parent[i] na find(parent, parent[i])
+        ZWRÓĆ parent[i]
+
+    METODA union(parent, rank, x, y):
+        JEŚLI rank[x] < rank[y]:
+            USTAW parent[x] na y
+        JEŚLI rank[x] > rank[y]:
+            USTAW parent[y] na x
+        W PRZECIWNYM RAZIE:
+            USTAW parent[y] na x
+            ZWIĘKSZ rank[x] o 1
+
+    METODA kruskal():
+        INICJALIZUJ result jako pustą listę
+        USTAW i na 0
+        USTAW e na 0
+
+        POSORTUJ graph według trzeciego elementu (waga) w rosnącej kolejności
+
+        INICJALIZUJ parent jako pustą listę
+        INICJALIZUJ rank jako pustą listę
+
+        DLA każdego node w zakresie V:
+            DODAJ node do parent
+            DODAJ 0 do rank
+        
+        DOPÓKI e < V - 1:
+            USTAW [u, v, w] na graph[i]
+            ZWIĘKSZ i o 1
+            USTAW x na find(parent, u)
+            USTAW y na find(parent, v)
+
+            JEŚLI x != y:
+                ZWIĘKSZ e o 1
+                DODAJ [u, v, w] do result
+                WYWOŁAJ union(parent, rank, x, y)
+        
+        INICJALIZUJ minimum_cost jako 0
+        WYPISZ 'Krawędzie minimalnego drzewa rozpinającego'
+        DLA każdego [u, v, w] w result:
+            DODAJ w do minimum_cost
+            WYPISZ chr(ord('a') + u) + ' --- ' + chr(ord('a') + v) + ' waga: ' + w
+        WYPISZ 'Koszt minimalnego drzewa rozpinającego: ' + minimum_cost

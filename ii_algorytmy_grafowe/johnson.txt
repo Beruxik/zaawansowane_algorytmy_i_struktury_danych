@@ -1,0 +1,61 @@
+KLASA Graph:
+    METODA __init__(vertices):
+        INICJALIZUJ V jako vertices
+        INICJALIZUJ graph jako pustą listę
+
+    METODA add_edge(u, v, w):
+        DODAJ [u, v, w] do graph
+
+    METODA johnsons_bellman_ford():
+        INICJALIZUJ dist_from_q_to_u jako listę zawierającą inf dla każdej wartości w zakresie V
+        DODAJ 0 do dist_from_q_to_u
+
+        DLA i w zakresie V:
+            WYWOŁAJ add_edge(V, i, 0)
+
+        DLA _ w zakresie V - 1:
+            DLA każdego edge w graph:
+                JEŚLI dist_from_q_to_u[edge[0]] + edge[2] < dist_from_q_to_u[edge[1]]:
+                    USTAW dist_from_q_to_u[edge[1]] na dist_from_q_to_u[edge[0]] + edge[2]
+        
+        USUŃ ostatni element z dist_from_q_to_u
+        ZWRÓĆ dist_from_q_to_u
+    
+    METODA remove_q():
+        INICJALIZUJ graph_wo_q jako listę zawierającą edge dla każdego edge w graph jeśli edge[0] != V
+        ZWRÓĆ graph_wo_q
+
+    METODA change_edge_weights(dist_from_q_to_u):
+        USTAW graph na remove_q()
+        DLA każdego edge w graph:
+            USTAW edge[2] na dist_from_q_to_u[edge[0]] + edge[2] - dist_from_q_to_u[edge[1]]
+
+    METODA dijkstra(start):
+        INICJALIZUJ distances jako słownik gdzie klucz to i, a wartość to 0 jeśli i == start, w przeciwnym razie inf, dla każdego i w zakresie V
+        INICJALIZUJ edges jako słownik gdzie klucz to i, a wartość to pusta lista, dla każdego i w zakresie V
+
+        DLA i w zakresie V:
+            DLA każdego edge w graph:
+                JEŚLI edge[0] == i:
+                    DODAJ edge do edges[i]
+
+        INICJALIZUJ pred jako listę zawierającą -1 dla każdej wartości w zakresie V
+        INICJALIZUJ visited_nodes jako pustą listę
+
+        DLA _ w zakresie V:
+            DLA każdego node w posortowanej liście distances.items() według wartości:
+                JEŚLI node[0] nie jest w visited_nodes:
+                    USTAW current_node na node[0]
+                    DODAJ node[0] do visited_nodes
+                    PRZERWIJ
+
+            DLA każdego edge w edges[current_node]:
+                JEŚLI distances[edge[0]] + edge[2] < distances[edge[1]]:
+                    USTAW distances[edge[1]] na distances[edge[0]] + edge[2]
+                    USTAW pred[edge[1]] na edge[0]
+        
+        ZWRÓĆ (distances, pred)
+
+    METODA johnson(start):
+        WYWOŁAJ change_edge_weights(johnsons_bellman_ford())
+        ZWRÓĆ dijkstra(start)

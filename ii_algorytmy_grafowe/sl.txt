@@ -1,0 +1,40 @@
+FUNKCJA smallest_last_coloring(graph):
+    INICJALIZUJ degrees jako słownik gdzie klucz to i, a wartość to stopień wierzchołka i
+    INICJALIZUJ neighbours jako słownik gdzie klucz to i, a wartość to lista sąsiadów wierzchołka i
+
+    DLA i, row w enumerate(graph):
+        USTAW degree na 0
+        DLA j, weight w enumerate(row):
+            JEŚLI weight nie jest równy 0 i weight nie jest równy inf:
+                ZWIĘKSZ degree o 1
+                DODAJ j do neighbours[i]
+
+        USTAW degrees[i] na degree
+
+    INICJALIZUJ removed_vertices jako pustą listę
+
+    DOPÓKI degrees nie jest pusty:
+        USTAW min_degree_vertex na wierzchołek z najmniejszym stopniem w degrees
+        DODAJ min_degree_vertex do removed_vertices
+        USUŃ min_degree_vertex z degrees
+
+        DLA każdego neighbour w neighbours[min_degree_vertex]:
+            JEŚLI neighbour jest w degrees:
+                ZMNIEJSZ degrees[neighbour] o 1
+                USUŃ min_degree_vertex z neighbours[neighbour]
+
+    INICJALIZUJ colors jako pusty słownik
+
+    DLA każdego vertex w odwróconej kolejności removed_vertices:
+        INICJALIZUJ available_colors jako lista wszystkich kolorów
+        DLA każdego neighbour w neighbours[vertex]:
+            JEŚLI neighbour jest w colors:
+                USUŃ colors[neighbour] z available_colors
+
+        USTAW colors[vertex] na pierwszy dostępny kolor z available_colors
+
+    INICJALIZUJ colors_translated jako pusty słownik
+    DLA każdego vertex w colors:
+        USTAW colors_translated[chr(ord('a') + vertex)] na colors[vertex]
+
+    ZWRÓĆ colors_translated
