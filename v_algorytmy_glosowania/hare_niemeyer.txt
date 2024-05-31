@@ -1,0 +1,18 @@
+FUNKCJA hare_niemeyer(lista_głosów, liczba_mandatów):
+    suma_głosów = SUMA(lista_głosów)
+    
+    współczynniki_głosów = [głosy * liczba_mandatów / suma_głosów DLA głosów w lista_głosów]
+
+    mandaty_dla_głosów = [ZAOKRĄGLENIE W DÓŁ(mandaty) DLA mandaty w współczynniki_głosów]
+    
+    reszta_współczynników_głosów = [a - b DLA a, b w ZIP(współczynniki_głosów, mandaty_dla_głosów)]
+
+    liczba_mandatów -= SUMA(mandaty_dla_głosów)
+    
+    DOPÓKI liczba_mandatów > 0:
+        max_index = INDEKS maksymalnej wartości w reszta_współczynników_głosów
+        mandaty_dla_głosów[max_index] += 1
+        reszta_współczynników_głosów[max_index] = 0
+        liczba_mandatów -= 1
+    
+    ZWRÓĆ mandaty_dla_głosów

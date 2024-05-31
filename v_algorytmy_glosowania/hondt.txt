@@ -1,0 +1,11 @@
+FUNKCJA hondt(lista_głosów, liczba_mandatów):
+    mandaty_dla_głosów = LISTA zer o długości lista_głosów
+    współczynniki_głosów = KOPIA lista_głosów
+
+    DOPÓKI liczba_mandatów > 0:
+        max_index = INDEKS maksymalnej wartości w współczynniki_głosów
+        mandaty_dla_głosów[max_index] += 1
+        współczynniki_głosów[max_index] = lista_głosów[max_index] / (mandaty_dla_głosów[max_index] + 1)
+        liczba_mandatów -= 1
+
+    ZWRÓĆ mandaty_dla_głosów
