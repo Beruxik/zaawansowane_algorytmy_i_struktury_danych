@@ -1,0 +1,17 @@
+FUNKCJA pca(dane, n_components):
+    data_meaned = dane - ŚREDNIA(dane wzdłuż osi 0)
+
+    cov_matrix = MACIERZ KOWARIANCJI(data_meaned, rowvar=False)
+
+    eigen_values, eigen_vectors = WARTOŚCI I WEKTORY WŁASNE(cov_matrix)
+
+    sorted_index = INDEKSY eigen_values POSORTOWANE MALEJĄCO
+    sorted_eigenvectors = eigen_vectors[:, sorted_index]
+
+    eigenvector_subset = sorted_eigenvectors[:, 0:n_components]
+
+    data_reduced = MNOŻENIE MACIERZY(
+        transpozycja(eigenvector_subset), transpozycja(data_meaned)
+    ) TRANSPOZYCJA
+
+    ZWRÓĆ data_reduced

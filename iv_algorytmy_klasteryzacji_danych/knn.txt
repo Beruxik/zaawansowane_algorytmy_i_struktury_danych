@@ -1,0 +1,27 @@
+FUNKCJA split_data_into_train_and_test(dane, test_ratio = 0.2):
+    test_size = INT(długość dane * test_ratio)
+    shuffled_indices = LOSOWA PERMUTACJA indeksów od 0 do długości dane - 1
+    test_indices = PIERWSZE test_size elementów shuffled_indices
+    train_indices = POZOSTAŁE elementy shuffled_indices
+    ZWRÓĆ dane[train_indices], dane[test_indices]
+
+FUNKCJA split_data_into_features_and_labels(dane, label_class):
+    features = dane BEZ kolumny label_class
+    labels = kolumna label_class w dane
+    ZWRÓĆ features, labels
+
+FUNKCJA minkowski(v1, v2, m = 2):
+    distance = 0
+    DLA każdego feature w v1.index:
+        distance += ABS(v1[feature] - v2[feature]) ** m
+    ZWRÓĆ distance ** (1 / m)
+
+FUNKCJA get_nearest_neighbors(train_features, test_instance, k):
+    distances = train_features APPLY minkowski(x, test_instance) DLA każdego x w train_features wzdłuż osi 1
+    ZWRÓĆ k najmniejszych wartości distances
+
+FUNKCJA predict(nearest_neighbors, train_labels):
+    ZWRÓĆ najczęściej występującą wartość w train_labels DLA indeksów w nearest_neighbors
+
+FUNKCJA accuracy(predictions, test_labels):
+    ZWRÓĆ SUMA(predictions == test_labels) / długość test_labels

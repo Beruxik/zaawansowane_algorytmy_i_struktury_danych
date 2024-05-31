@@ -1,0 +1,25 @@
+FUNKCJA initialize_centroids(dane, k):
+    LOSOWO WYBIERZ k wierszy z dane bez powtórzeń
+    ZWRÓĆ te wiersze jako centroidy
+
+FUNKCJA assign_clusters(dane, centroidy):
+    OBLICZ odległości między każdym punktem danych a każdym centroidem
+    PRZYPISZ każdy punkt do najbliższego centroidu
+    ZWRÓĆ przypisane klastry
+
+FUNKCJA update_centroids(dane, klastry, k):
+    INICJALIZUJ centroidy jako macierz zer o wymiarach (k, liczba cech w danych)
+    DLA każdego i w zakresie k:
+        centroidy[i] = średnia punktów danych przypisanych do klastra i
+    ZWRÓĆ centroidy
+
+FUNKCJA kmeans(dane, k, maks_iteracje=10000):
+    centroidy = initialize_centroids(dane, k)
+    DLA każdego _ w zakresie maks_iteracje:
+        klastry = assign_clusters(dane, centroidy)
+        nowe_centroidy = update_centroids(dane, klastry, k)
+        JEŚLI centroidy są równe nowe_centroidy:
+            PRZERWIJ
+        centroidy = nowe_centroidy
+    ZWRÓĆ klastry
+

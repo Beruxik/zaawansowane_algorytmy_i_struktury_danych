@@ -1,0 +1,13 @@
+FUNKCJA anagram(string1, string2):
+    ZWRÓĆ POSORTOWANY string1 po zamianie na małe litery i usunięciu spacji == POSORTOWANY string2 po zamianie na małe litery i usunięciu spacji
+
+WYPISZ 'Podaj pierwszy ciąg: '
+WPROWADŹ string1
+
+WYPISZ 'Podaj drugi ciąg: '
+WPROWADŹ string2
+
+JEŚLI anagram(string1, string2):
+    WYPISZ 'Te słowa są anagramami.'
+W PRZECIWNYM RAZIE:
+    WYPISZ 'Te słowa nie są anagramami.'

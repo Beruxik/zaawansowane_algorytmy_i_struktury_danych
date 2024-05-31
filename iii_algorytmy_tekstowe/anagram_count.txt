@@ -1,0 +1,28 @@
+FUNKCJA anagram(string1, string2):
+    INICJALIZUJ string1_count jako pusty słownik
+    INICJALIZUJ string2_count jako pusty słownik
+
+    DLA każdego letter w string1 po usunięciu spacji i zamianie na małe litery:
+        JEŚLI letter jest w string1_count:
+            ZWIĘKSZ string1_count[letter] o 1
+        W PRZECIWNYM RAZIE:
+            USTAW string1_count[letter] na 1
+    
+    DLA każdego letter w string2 po usunięciu spacji i zamianie na małe litery:
+        JEŚLI letter jest w string2_count:
+            ZWIĘKSZ string2_count[letter] o 1
+        W PRZECIWNYM RAZIE:
+            USTAW string2_count[letter] na 1
+    
+    ZWRÓĆ POSORTOWANE klucze string1_count są równe POSORTOWANYM kluczom string2_count
+
+WYPISZ 'Podaj pierwszy ciąg: '
+WPROWADŹ string1
+
+WYPISZ 'Podaj drugi ciąg: '
+WPROWADŹ string2
+
+JEŚLI anagram(string1, string2):
+    WYPISZ 'Te słowa są anagramami.'
+W PRZECIWNYM RAZIE:
+    WYPISZ 'Te słowa nie są anagramami.'

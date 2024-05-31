@@ -1,0 +1,15 @@
+FUNKCJA palindrome(string):
+    INICJALIZUJ modified_string jako pusty string
+    DLA każdego letter w string:
+        JEŚLI letter jest alfanumeryczny:
+            DODAJ letter do modified_string
+    ZAMIEŃ modified_string na małe litery
+    ZWRÓĆ modified_string == modified_string odwrócony
+
+WYPISZ 'Podaj ciąg znaków: '
+WPROWADŹ string
+
+JEŚLI palindrome(string):
+    WYPISZ 'To jest palindrom.'
+W PRZECIWNYM RAZIE:
+    WYPISZ 'To nie jest palindrom.'
